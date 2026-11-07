@@ -1,0 +1,44 @@
+# ==========================================
+# Security and Secrets (Critical Rule)
+# ==========================================
+.env
+.env.*
+*.pem
+*.key
+*.id_rsa
+
+# ==========================================
+# Dependencies and Builds
+# ==========================================
+node_modules/
+vendor/
+dist/
+build/
+*.tsbuildinfo
+
+# ==========================================
+# Databases and Local Dumps
+# ==========================================
+*.sql
+*.sqlite
+*.dump
+/backups/
+
+# ==========================================
+# Runtime Environments and Logs
+# ==========================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# ==========================================
+# IDEs and Operating System Metadata
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+"@
