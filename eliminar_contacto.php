@@ -11,7 +11,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     try {
         $db = (new Conexion())->conectar();
 
-        // Consulta restringida: Se exige que coincidan AMBOS identificadores
+        // Consulta restringida: Se exige que coincidan ambos identificadores
         $stmt = $db->prepare("DELETE FROM contactos WHERE id_contacto = :id_contacto AND id_usuario = :id_usuario");
         $stmt->bindParam(':id_contacto', $id_contacto, PDO::PARAM_INT);
         $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
