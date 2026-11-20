@@ -3,7 +3,7 @@ CREATE TABLE usuarios (
        nombre VARCHAR(100) NOT NULL,
        correo VARCHAR(100) NOT NULL UNIQUE,
        password VARCHAR(255) NOT NULL,
-       fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
    CREATE TABLE contactos (

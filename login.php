@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $db = (new Conexion())->conectar();
             // Buscar el usuario por correo
-            $stmt = $db->prepare("SELECT id_usuario, nombre, password FROM usuarios WHERE correo = :correo");
+            $stmt = $db->prepare("SELECT id_usuario, nombre, password, correo FROM usuarios WHERE correo = :correo");
             $stmt->bindParam(':correo', $correo);
             $stmt->execute();
 
@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Autenticación correcta: Almacenar datos en la variable superglobal $_SESSION
                 $_SESSION['usuario_id'] = $usuario['id_usuario'];
                 $_SESSION['usuario_nombre'] = $usuario['nombre'];
+                //correccion de la retroalimentacion 
+                $_SESSION['usuario_correo'] = $usuario['correo'];
 
                 // Redirigir a la agenda privada
                 header("Location: index.php");

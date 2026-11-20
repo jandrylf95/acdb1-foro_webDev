@@ -9,8 +9,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     if (!empty($nombre) && !empty($correo) && !empty($password)) {
+        //correccion de retroalimentacion
+         if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        $mensaje = "El formato del correo electrónico no es válido.";
+    } else {
         // Encripta la contraseña
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+        
 
         try {
             $db = (new Conexion())->conectar();

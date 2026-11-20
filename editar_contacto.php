@@ -23,31 +23,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ciudad = trim($_POST['ciudad']);
 
     if (!empty($nombre) && !empty($telefono)) {
-        try {
-            // Sentencia UPDATE (id_contacto y id_usuario)
-            $update = $db->prepare("UPDATE contactos 
-                                    SET nombre = :nombre, telefono = :telefono, correo = :correo, ciudad = :ciudad 
-                                    WHERE id_contacto = :id_contacto AND id_usuario = :id_usuario");
-            $update->bindParam(':nombre', $nombre);
-            $update->bindParam(':telefono', $telefono);
-            $update->bindParam(':correo', $correo);
-            $update->bindParam(':ciudad', $ciudad);
-            $update->bindParam(':id_contacto', $id_contacto, PDO::PARAM_INT);
-            $update->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        if (!preg_match('/^[0-9]{10}$/', $telefono)) {
+        $mensaje = "El teléfono debe contener únicamente números y un máximo de 10 dígitos.";
+        } elseif (!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            $mensaje = "El formato del correo electrónico no es válido.";
+            } else {
+                try {
+                    // Sentencia UPDATE (id_contacto y id_usuario)
+                    $update = $db->prepare("UPDATE contactos 
+                                            SET nombre = :nombre, telefono = :telefono, correo = :correo, ciudad = :ciudad 
+                                            WHERE id_contacto = :id_contacto AND id_usuario = :id_usuario");
+                    $update->bindParam(':nombre', $nombre);
+                    $update->bindParam(':telefono', $telefono);
+                    $update->bindParam(':correo', $correo);
+                    $update->bindParam(':ciudad', $ciudad);
+                    $update->bindParam(':id_contacto', $id_contacto, PDO::PARAM_INT);
+                    $update->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
 
-            if ($update->execute()) {
-                header("Location: index.php");
-                exit();
-            }
-        } catch (PDOException $e) {
-            $mensaje = "Error al actualizar: " . $e->getMessage();
-            $contacto = [
-                'nombre' => $nombre,
-                'telefono' => $telefono,
-                'correo' => $correo,
-                'ciudad' => $ciudad
-            ];
-        }
+                    if ($update->execute()) {
+                        header("Location: index.php");
+                        exit();
+                    }
+                } catch (PDOException $e) {
+                    $mensaje = "Error al actualizar: " . $e->getMessage();
+                    $contacto = [
+                        'nombre' => $nombre,
+                        'telefono' => $telefono,
+                        'correo' => $correo,
+                        'ciudad' => $ciudad
+                    ];
+                }
+            }    
     } else {
         $mensaje = "Nombre y Teléfono son obligatorios.";
         $contacto = [

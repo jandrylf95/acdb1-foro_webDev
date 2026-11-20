@@ -5,6 +5,8 @@ require_once 'conexion.php';
 
 $usuario_id = $_SESSION['usuario_id'];
 $usuario_nombre = $_SESSION['usuario_nombre'];
+//correccion de la retroalimentacion 
+$usuario_correo = $_SESSION['usuario_correo'] ?? ''; 
 
 //Obtener los contactos correspondientes a este usuario
 try {
@@ -27,6 +29,8 @@ try {
 <body>
     <header>
         <h1>Bienvenido, <?php echo htmlspecialchars($usuario_nombre); ?>!</h1>
+        <!--Correccion de retroalimentacion-->
+        <p><strong>Correo:</strong> <?php echo htmlspecialchars($usuario_correo); ?>
         <p>Has iniciado sesión correctamente en tu agenda personal.</p>
         <p>
             <a href="logout.php">Cerrar Sesión</a>

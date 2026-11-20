@@ -12,28 +12,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_SESSION['usuario_id']; // Vincula a la sesión activa
 
     if (!empty($nombre) && !empty($telefono)) {
-        if (!preg_match('/^[0-9]{1,10}$/', $telefono)) {
+        if (!preg_match('/^[0-9]{10}$/', $telefono)) {
             $mensaje = "El teléfono debe contener únicamente números y un máximo de 10 dígitos.";
-        } else {
-            try {
-                $db = (new Conexion())->conectar();
-                $stmt = $db->prepare("INSERT INTO contactos (id_usuario, nombre, telefono, correo, ciudad) 
-                                      VALUES (:id_usuario, :nombre, :telefono, :correo, :ciudad)");
-                
-                $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-                $stmt->bindParam(':nombre', $nombre);
-                $stmt->bindParam(':telefono', $telefono);
-                $stmt->bindParam(':correo', $correo);
-                $stmt->bindParam(':ciudad', $ciudad);
+            //correccion de retroalimentacion
+            } elseif (!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            $mensaje = "El formato del correo electrónico no es válido.";
 
-                if ($stmt->execute()) {
-                    header("Location: index.php");
-                    exit();
+            } else {
+                try {
+                    $db = (new Conexion())->conectar();
+                    $stmt = $db->prepare("INSERT INTO contactos (id_usuario, nombre, telefono, correo, ciudad) 
+                                        VALUES (:id_usuario, :nombre, :telefono, :correo, :ciudad)");
+                    
+                    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+                    $stmt->bindParam(':nombre', $nombre);
+                    $stmt->bindParam(':telefono', $telefono);
+                    $stmt->bindParam(':correo', $correo);
+                    $stmt->bindParam(':ciudad', $ciudad);
+
+                    if ($stmt->execute()) {
+                        header("Location: index.php");
+                        exit();
+                    }
+                } catch (PDOException $e) {
+                    $mensaje = "Error al guardar el contacto: " . $e->getMessage();
                 }
-            } catch (PDOException $e) {
-                $mensaje = "Error al guardar el contacto: " . $e->getMessage();
             }
-        }
     } else {
         $mensaje = "El nombre y el teléfono son campos obligatorios.";
     }
@@ -65,10 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 type="tel" 
                 name="telefono" 
                 maxlength="10" 
-                pattern="[0-9]{1,10}" 
+                pattern="[0-9]{10}" 
                 inputmode="numeric"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
-                title="Solo se permiten hasta 10 números"
+                title="Debe tener 10 números"
                 required>
         </div>
         <br>
