@@ -21,9 +21,8 @@ class Conexion {
             ]);
 
         } catch (PDOException $e) {
-            // Manejo de la excepción utilizando metodos como getMessage()
-            echo "Error de conexión: " . $e->getMessage();
-            exit();
+            error_log($e->getMessage()); // Guarda el detalle técnico en el log del servidor
+            die("Error: No se pudo conectar a la base de datos. Intente más tarde.");
         }
 
         return $this->conexion;

@@ -16,7 +16,8 @@ try {
     $stmt->execute();
     $contactos = $stmt->fetchAll();
 } catch (PDOException $e) {
-    die("Error al consultar contactos: " . $e->getMessage());
+    error_log($e->getMessage());
+    die("Ocurrió un error al cargar los contactos. Intente más tarde.");
 }
 ?>
 
@@ -30,7 +31,7 @@ try {
     <header>
         <h1>Bienvenido, <?php echo htmlspecialchars($usuario_nombre); ?>!</h1>
         <!--Correccion de retroalimentacion-->
-        <p><strong>Correo:</strong> <?php echo htmlspecialchars($usuario_correo); ?>
+        <p><strong>Correo:</strong> <?php echo htmlspecialchars($usuario_correo); ?></p>
         <p>Has iniciado sesión correctamente en tu agenda personal.</p>
         <p>
             <a href="logout.php">Cerrar Sesión</a>
@@ -65,7 +66,10 @@ try {
                             <td><?php echo htmlspecialchars($c['ciudad']); ?></td>
                             <td>
                                 <a href="editar_contacto.php?id=<?php echo $c['id_contacto']; ?>">Editar</a> |
-                                <a href="eliminar_contacto.php?id=<?php echo $c['id_contacto']; ?>" onclick="return confirm('¿Seguro que deseas eliminar este contacto?');">Eliminar</a>
+                                <form action="eliminar_contacto.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+                                    <input type="hidden" name="id_contacto" value="<?php echo $c['id_contacto']; ?>">
+                                    <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0; font:inherit;">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

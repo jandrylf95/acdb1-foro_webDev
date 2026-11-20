@@ -9,33 +9,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     if (!empty($nombre) && !empty($correo) && !empty($password)) {
-        //correccion de retroalimentacion
-         if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        $mensaje = "El formato del correo electrónico no es válido.";
-    } else {
-        // Encripta la contraseña
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    }
+        // Corrección de retroalimentación: validar formato del correo
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            $mensaje = "El formato del correo electrónico no es válido.";
+        } else {
+            // Encripta la contraseña
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-        
+            try {
+                $db = (new Conexion())->conectar();
+                // Prepara la consulta SQL de inserción
+                $stmt = $db->prepare("INSERT INTO usuarios (nombre, correo, password) VALUES (:nombre, :correo, :password)");
+                $stmt->bindParam(':nombre', $nombre);
+                $stmt->bindParam(':correo', $correo);
+                $stmt->bindParam(':password', $passwordHash);
 
-        try {
-            $db = (new Conexion())->conectar();
-            // Prepara la consulta SQL de inserción
-            $stmt = $db->prepare("INSERT INTO usuarios (nombre, correo, password) VALUES (:nombre, :correo, :password)");
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':correo', $correo);
-            $stmt->bindParam(':password', $passwordHash);
-
-            if ($stmt->execute()) {
-                $mensaje = "¡Registro exitoso! Ya puedes iniciar sesión.";
-            }
-        } catch (PDOException $e) {
-            // El código de error 23000 indica un correo duplicado (UNIQUE)
-            if ($e->getCode() == 23000) {
-                $mensaje = "Error: El correo ya está registrado.";
-            } else {
-                $mensaje = "Error al registrar: " . $e->getMessage();
+                if ($stmt->execute()) {
+                    $mensaje = "¡Registro exitoso! Ya puedes iniciar sesión.";
+                }
+            } catch (PDOException $e) {
+                // El código de error 23000 indica un correo duplicado (UNIQUE)
+                if ($e->getCode() == 23000) {
+                    $mensaje = "Error: El correo ya está registrado.";
+                } else {
+                    error_log($e->getMessage());
+                    $mensaje = "Ocurrió un error en el servidor. Por favor intente más tarde.";
+                }
             }
         }
     } else {

@@ -40,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Credenciales incorrectas. Verifique su correo o contraseña.";
             }
         } catch (PDOException $e) {
-            $error = "Error en el servidor: " . $e->getMessage();
+            error_log($e->getMessage());
+            $error = "Ocurrió un error en el servidor. Por favor intente más tarde.";
         }
     } else {
         $error = "Por favor ingrese correo y contraseña.";

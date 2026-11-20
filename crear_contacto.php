@@ -35,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         exit();
                     }
                 } catch (PDOException $e) {
-                    $mensaje = "Error al guardar el contacto: " . $e->getMessage();
+                    error_log($e->getMessage());
+                    $mensaje = "Ocurrió un error en el servidor. Por favor intente más tarde.";
                 }
             }
     } else {

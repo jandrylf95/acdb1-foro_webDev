@@ -4,8 +4,8 @@ require_once 'auth.php';
 require_once 'conexion.php';
 
 // Verifica que se reciba el ID del contacto por la URL (GET)
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id_contacto = intval($_GET['id']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_contacto']) && is_numeric($_POST['id_contacto'])) {
+    $id_contacto = intval($_POST['id_contacto']);
     $id_usuario = $_SESSION['usuario_id']; // ID del usuario autenticado
 
     try {
@@ -19,7 +19,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $stmt->execute();
 
     } catch (PDOException $e) {
-        die("Error al eliminar el contacto: " . $e->getMessage());
+        error_log($e->getMessage()    );
+        die("Ocurrió un error en el servidor. Por favor intente más tarde.");
     }
 }
 

@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         exit();
                     }
                 } catch (PDOException $e) {
-                    $mensaje = "Error al actualizar: " . $e->getMessage();
+                    error_log($e->getMessage());
+                    $mensaje = "Ocurrió un error en el servidor. Por favor intente más tarde.";
                     $contacto = [
                         'nombre' => $nombre,
                         'telefono' => $telefono,
@@ -80,7 +81,8 @@ if ($contacto === null) {
             exit();
         }
     } catch (PDOException $e) {
-        die("Error al obtener contacto: " . $e->getMessage());
+        error_log($e->getMessage());
+        die("Ocurrió un error en el servidor. Por favor intente más tarde.");
     }
 }
 ?>
@@ -108,7 +110,9 @@ if ($contacto === null) {
         <br>
         <div>
             <label>Teléfono:</label>
-            <input type="text" name="telefono" value="<?php echo htmlspecialchars($contacto['telefono']); ?>" required>
+            <input type="text" name="telefono" value="<?php echo htmlspecialchars($contacto['telefono']); ?>" maxlength="10" pattern="[0-9]{10}" inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+            title="Solo se permiten 10 números" required>
         </div>
         <br>
         <div>
