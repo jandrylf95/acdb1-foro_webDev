@@ -14,6 +14,14 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $id_contacto = intval($_GET['id']);
 $db = (new Conexion())->conectar();
+// Cargar lista de categorías para el selector
+try {
+    $stmtCat = $db->query("SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC");
+    $categorias = $stmtCat->fetchAll();
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+    $categorias = [];
+}
 
 // Procesa el formulario cuando se envía por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefono = trim($_POST['telefono']);
     $correo = trim($_POST['correo']);
     $ciudad = trim($_POST['ciudad']);
+     // Nuevos campos
+    $id_categoria = !empty($_POST['id_categoria']) ? intval($_POST['id_categoria']) : null;
+    $favorito = isset($_POST['favorito']) ? 1 : 0;
 
     if (!empty($nombre) && !empty($telefono)) {
         if (!preg_match('/^[0-9]{10}$/', $telefono)) {
@@ -31,14 +42,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 try {
                     // Sentencia UPDATE (id_contacto y id_usuario)
                     $update = $db->prepare("UPDATE contactos 
-                                            SET nombre = :nombre, telefono = :telefono, correo = :correo, ciudad = :ciudad 
-                                            WHERE id_contacto = :id_contacto AND id_usuario = :id_usuario");
+                            SET id_categoria = :id_categoria,
+                                nombre = :nombre, 
+                                telefono = :telefono, 
+                                correo = :correo, 
+                                ciudad = :ciudad,
+                                favorito = :favorito 
+                            WHERE id_contacto = :id_contacto AND id_usuario = :id_usuario");
+                    // Vincular categoría (permite NULL si no seleccionó ninguna)
+                    if ($id_categoria === null) {
+                        $update->bindValue(':id_categoria', null, PDO::PARAM_NULL);
+                    } else {
+                        $update->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
+                    }
                     $update->bindParam(':nombre', $nombre);
                     $update->bindParam(':telefono', $telefono);
                     $update->bindParam(':correo', $correo);
                     $update->bindParam(':ciudad', $ciudad);
+                    $update->bindParam(':favorito', $favorito, PDO::PARAM_INT);
                     $update->bindParam(':id_contacto', $id_contacto, PDO::PARAM_INT);
                     $update->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+                    
 
                     if ($update->execute()) {
                         header("Location: index.php");
@@ -51,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'nombre' => $nombre,
                         'telefono' => $telefono,
                         'correo' => $correo,
-                        'ciudad' => $ciudad
+                        'ciudad' => $ciudad,
+                        'id_categoria' => $id_catego,                ria,
+                        'favorito' => $favorito
                     ];
                 }
             }    
@@ -61,7 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'nombre' => $nombre,
             'telefono' => $telefono,
             'correo' => $correo,
-            'ciudad' => $ciudad
+            'ciudad' => $ciudad,
+            'id_categoria' => $id_categoria,
+            'favorito' => $favorito
         ];
     }
 }
@@ -123,6 +151,26 @@ if ($contacto === null) {
         <div>
             <label>Ciudad:</label>
             <input type="text" name="ciudad" value="<?php echo htmlspecialchars($contacto['ciudad']); ?>">
+        </div>
+        <br>
+         <div>
+            <label>Categoría:</label>
+            <select name="id_categoria">
+                <option value="">-- Sin categoría --</option>
+                <?php foreach ($categorias as $cat): ?>
+                    <option value="<?php echo $cat['id_categoria']; ?>" 
+                        <?php if (isset($contacto['id_categoria']) && $contacto['id_categoria'] == $cat['id_categoria']) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars($cat['nombre']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <br>
+        <div>
+            <label>
+                <input type="checkbox" name="favorito" value="1" <?php if (!empty($contacto['favorito'])) echo 'checked'; ?>>
+                ⭐ Marcar como favorito
+            </label>
         </div>
         <br>
         <button type="submit">Actualizar</button>
