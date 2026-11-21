@@ -1,5 +1,5 @@
 <?php
-// 1. Siempre iniciar la sesión al comienzo del archivo
+// Siempre iniciar la sesión al comienzo del archivo
 session_start();
 
 // Si el usuario ya está autenticado, lo redirigimos a la página privada principal
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $usuario = $stmt->fetch(); // Obtener el registro como arreglo asociativo
 
-            // 2. Comprobar si el usuario existe Y verificar la contraseña encriptada
+            // Comprobar si el usuario existe Y verificar la contraseña encriptada
             if ($usuario && password_verify($password, $usuario['password'])) {
                 // Autenticación correcta: Almacenar datos en la variable superglobal $_SESSION
                 $_SESSION['usuario_id'] = $usuario['id_usuario'];
@@ -54,12 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión - Agenda</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <div class="contenedor">
     <h2>Iniciar Sesión</h2>
 
     <?php if (!empty($error)): ?>
-        <p style="color: red;"><strong><?php echo $error; ?></strong></p>
+        <p class="mensaje-error"><strong><?php echo $error; ?></strong></p>
     <?php endif; ?>
 
     <form action="login.php" method="POST">
@@ -77,5 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <p><a href="registro.php">¿No tienes cuenta? Regístrate aquí</a></p>
+    </div>
 </body>
 </html> 

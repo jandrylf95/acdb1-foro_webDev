@@ -67,12 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Nuevo Contacto - Agenda</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <div class="contenedor">
     <h2>Agregar Nuevo Contacto</h2>
 
     <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><strong><?php echo $mensaje; ?></strong></p>
+        <p class="mensaje-error"><strong><?php echo $mensaje; ?></strong></p>
     <?php endif; ?>
 
     <form action="crear_contacto.php" method="POST">
@@ -124,7 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <br>
         <button type="submit">Guardar Contacto</button>
-        <a href="index.php">Cancelar</a>
+        <a href="index.php" class="btn-cancelar">Cancelar</a>
     </form>
+    </div>
 </body>
 </html>

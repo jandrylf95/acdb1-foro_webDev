@@ -1,0 +1,207 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Contenedor principal tipo tarjeta */
+.contenedor {
+    max-width: 950px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Encabezados y títulos */
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e1e8ed;
+    padding-bottom: 15px;
+}
+
+/* Enlaces */
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Formularios y campos de entrada */
+form {
+    margin-top: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    background-color: #ffffff;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Checkbox con etiqueta en línea */
+label input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Botones */
+button[type="submit"],
+.btn {
+    display: inline-block;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-right: 10px;
+}
+
+button[type="submit"]:hover,
+.btn:hover {
+    background-color: #2980b9;
+    text-decoration: none;
+}
+
+/* Botón secundario / cancelar */
+.btn-cancelar {
+    color: #718096;
+    margin-left: 10px;
+}
+
+.btn-cancelar:hover {
+    color: #e74c3c;
+}
+
+/* Botón de eliminar en tabla */
+.btn-eliminar {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: px;
+}
+
+.btn-eliminar:hover {
+    color: #c0392b;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+table th, table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+table th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+table tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Alertas de error y mensajes */
+.mensaje-error {
+    background-color: #fff5f5;
+    color: #e53e3e;
+    border: 1px solid #fed7d7;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.mensaje-exito {
+    background-color: #f0fff4;
+    color: #38a169;
+    border: 1px solid #c6f6d5;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Barra de filtros en el index */
+.barra-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.barra-filtros input[type="text"] {
+    width: auto;
+    flex: 1;
+    min-width: 200px;
+}
+
+.barra-filtros select {
+    width: auto;
+}

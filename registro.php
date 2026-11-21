@@ -48,12 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <div class="contenedor">
     <h2>Registro de Usuario</h2>
     
     <?php if (!empty($mensaje)): ?>
-        <p><strong><?php echo $mensaje; ?></strong></p>
+        <p class="mensaje-exito"><strong><?php echo $mensaje; ?></strong></p>
     <?php endif; ?>
 
     <form action="registro.php" method="POST">
@@ -75,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Registrarse</button>
     </form>
 
-    <p><a href="login.php">¿Ya tienes cuenta? Inicia sesión aquí</a></p>
+    <p style="margin-top: 15px;"><a href="login.php">¿Ya tienes cuenta? Inicia sesión aquí</a></p>
+    </div>
 </body>
 </html>

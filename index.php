@@ -8,7 +8,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
 //correccion de la retroalimentacion 
 $usuario_correo = $_SESSION['usuario_correo'] ?? ''; 
 
-// 1. Nuevos parámetros de búsqueda, filtro y ordenamiento (v2.0)
+// Nuevos parámetros de búsqueda, filtro y ordenamiento (v2.0)
 $busqueda = trim($_GET['buscar'] ?? '');
 $solo_favoritos = isset($_GET['favoritos']) && $_GET['favoritos'] === '1';
 $orden = $_GET['orden'] ?? 'recientes';
@@ -23,7 +23,7 @@ $ordenes_validos = [
 ];
 $columna_orden = $ordenes_validos[$orden] ?? 'c.id_contacto DESC';
 
-// 2. Obtener los contactos correspondientes a este usuario con mejoras de búsqueda, categoría y favoritos
+// Obtener los contactos correspondientes a este usuario con mejoras de búsqueda, categoría y favoritos
 try {
     $db = (new Conexion())->conectar();
 
@@ -67,8 +67,10 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Panel Principal - Agenda</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <div class="contenedor">
     <header>
         <h1>Bienvenido, <?php echo htmlspecialchars($usuario_nombre); ?>!</h1>
         <!--Correccion de retroalimentacion-->
@@ -86,7 +88,7 @@ try {
         <p><a href="crear_contacto.php">+ Agregar Nuevo Contacto</a></p>
 
         <!-- Barra de Búsqueda, Filtro y Ordenamiento (v2.0) -->
-        <form method="GET" action="index.php" style="margin-bottom: 20px;">
+        <form method="GET" action="index.php" class="barra-filtros">
             <input 
                 type="text" 
                 name="buscar" 
@@ -143,7 +145,7 @@ try {
                                 <a href="editar_contacto.php?id=<?php echo $c['id_contacto']; ?>">Editar</a> |
                                 <form action="eliminar_contacto.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
                                     <input type="hidden" name="id_contacto" value="<?php echo $c['id_contacto']; ?>">
-                                    <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0; font:inherit;">Eliminar</button>
+                                    <button type="submit" class="btn-eliminar">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -152,5 +154,6 @@ try {
             </table>
         <?php endif; ?>
     </section>
+    </div>
 </body>
 </html>

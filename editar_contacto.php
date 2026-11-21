@@ -120,12 +120,14 @@ if ($contacto === null) {
 <head>
     <meta charset="UTF-8">
     <title>Editar Contacto</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <div class="contenedor">
     <h2>Editar Contacto</h2>
 
     <?php if (!empty($mensaje)): ?>
-        <p style="color: red;"><strong><?php echo $mensaje; ?></strong></p>
+        <p class="mensaje-error"><strong><?php echo $mensaje; ?></strong></p>
     <?php endif; ?>
 
     <form action="editar_contacto.php?id=<?php echo $id_contacto; ?>" method="POST">
@@ -174,7 +176,8 @@ if ($contacto === null) {
         </div>
         <br>
         <button type="submit">Actualizar</button>
-        <a href="index.php">Cancelar</a>
+        <a href="index.php" class="btn-cancelar">Cancelar</a>
     </form>
+    </div>
 </body>
 </html>
